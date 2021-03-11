@@ -75,7 +75,7 @@ def restructure_stimuli_csv_dataset_1(french_name, destination_path=None):
 
 
 def restructure_triplets_dataset_1(name, destination_path=None):
-    old_data = pd.read_csv(name, sep=';')
+    old_data = pd.read_csv(name)
     old_data = pd.DataFrame(old_data)
 
     new_data = dict()
@@ -135,8 +135,9 @@ if __name__ == '__main__':
 
     parser = BUILD_ARGPARSE()
     args = parser.parse_args(sys.argv[1:])
-    # restructure_triplets_dataset_1('../ABX_bilingual/CogSci-2019-Unsupervised-speech-and-human-perception/experiment/analysis/outputs/human_experimental_data.csv',
-    #                                       '../coml_datasets/first_abx_dataset_human_experimental_data.csv')
-    restructure_stimuli_csv_dataset_1('../ABX_bilingual/CogSci-2019-Unsupervised-speech-and-human-perception/stimulus_meta.csv', '../coml_datasets/cogsci_abx/abx_cogsci_dataset_stimuli.csv')
+    restructure_triplets_dataset_1('../CogSci-2019-Unsupervised-speech-and-human-perception/experiment/analysis/outputs/experiment_data.csv',
+                                           '../Cognitive_ML_datasets/data/cogsci_abx/abx_cogsci_dataset_human_experimental_data.csv')
+    restructure_stimuli_csv_dataset_1('../CogSci-2019-Unsupervised-speech-and-human-perception/stimulus_meta.csv',
+                                      '../Cognitive_ML_datasets/data/cogsci_abx/abx_cogsci_dataset_stimuli.csv')
 
     print('Done')
