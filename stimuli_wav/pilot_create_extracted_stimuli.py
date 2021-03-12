@@ -4,7 +4,7 @@ import pandas as pd
 import os.path as osp
 import os
 
-def slice_wav(wav_file, index, begin, end, newfilename):
+def slice_wav(wav_file, begin, end, newfilename):
 
 	"""
 	This function slice an array into two values given as begin and end
@@ -36,19 +36,28 @@ if __name__ == '__main__':
     # split the wavs
     for i in range(len(stimuli_info['#file'])):
 
-        index = stimuli_info['#file']
-        onset = stimuli_info['#file']
-        offset = stimuli_info['#file']
-        wav_file = WAV_SOURCE_FOLDER + stimuli_info['#file'] + 'WAV.wav'
+        index = stimuli_info['index'][i]
+        onset = stimuli_info['onset'][i]
+        offset = stimuli_info['offset'][i]
+        wav_file = WAV_SOURCE_FOLDER + stimuli_info['#file'][i] + '.WAV.wav'
 
 
-        stimuli_folder = stimuli_info['#file'].split('/')
-        stimuli_folder.pop()
-        stimuli_folder = '/'.join(stimuli_folder)
-        if not osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder).exists():
-            os.mkdir(osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder))
+        stimuli_folder = stimuli_info['#file'][i].split('/')
+        f_prefix = stimuli_folder.pop()
+        stimuli_folder_part_1 = '/'.join(stimuli_folder[:1])
+        stimuli_folder_part_2 = '/'.join(stimuli_folder[:2])
+        stimuli_folder_part_3 = '/'.join(stimuli_folder[:3])
+        print(i)
 
-        extracted_wav_file = osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder)
+        if not os.path.exists(osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder_part_1)):
+            os.mkdir(osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder_part_1))
+        if not os.path.exists(osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder_part_2)):
+            os.mkdir(osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder_part_2))
+        if not os.path.exists(osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder_part_3)):
+            os.mkdir(osp.join(WAV_EXTRACTED_FOLDER, stimuli_folder_part_3))
 
+        extracted_wav_file = WAV_EXTRACTED_FOLDER  + '/' + stimuli_folder_part_3  + '/' + f_prefix + '_' + str(index) + '_sliced.wav'
 
-	print('Done')
+        slice_wav(wav_file, onset, offset, extracted_wav_file)
+
+	    #print('Done')
