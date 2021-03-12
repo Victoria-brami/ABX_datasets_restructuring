@@ -26,7 +26,7 @@ def restructure_stimuli_csv_dataset_2(french_name, english_name, destination_pat
     new_data = dict()
 
     new_data['index'] = [*old_french_data['index'], *old_english_data['index']]
-    new_data['#file'] = [*old_french_data['#file'], *old_english_data['#file']]
+    new_data['#file'] = [*old_french_data['#file'].apply(lambda x: '1s_french/' + str(x) + '.wav'), *old_english_data['#file'].apply(lambda x: '1s_english/' + str(x) + '.wav')]
     new_data['onset'] = [*old_french_data['onset'], *old_english_data['onset']]
     new_data['offset'] = [*old_french_data['offset'], *old_english_data['offset']]
     new_data['#phone'] = [*old_french_data['#phone'], *old_english_data['#phone']]
@@ -108,9 +108,9 @@ if __name__ == '__main__':
     parser = BUILD_ARGPARSE()
     args = parser.parse_args(sys.argv[1:])
     restructure_triplets_dataset_2('../interspeech-2020-perceptimatic/DATA/human_and_models.csv',
-                                   '../Cognitive_ML_datasets/data/zero_speech_dataset_human_experimental_results.csv')
+                                   '../data/zero_speech_dataset_human_experimental_results.csv')
 
     restructure_stimuli_csv_dataset_2('../interspeech-2020-perceptimatic/DATA/french/all_aligned_clean_french.csv',
                                       '../interspeech-2020-perceptimatic/DATA/english/all_aligned_clean_english.csv',
-                                      '../Cognitive_ML_datasets/data/zero_speech_dataset_stimuli.csv')
+                                      '../data/zero_speech_dataset_stimuli.csv')
     print('Done')

@@ -28,7 +28,7 @@ def restructure_stimuli_csv_dataset_1(french_name, destination_path=None):
 
     new_data['language'] = [old_data['language'][i][:2] for i in range(len(old_data['language']))]
     new_data['speaker'] = old_data['speaker']
-    new_data['dataset'] = ['ABX_Cogsci' for i in range(len(old_data['context']))]
+    new_data['dataset'] = ['ABX_Cogsci' for _ in range(len(old_data['context']))]
 
     # Specific to zerospeech dataset
     new_data['prev_phone'] = [old_data['context'][i].split('_')[0] for i in range(len(old_data['context']))]
