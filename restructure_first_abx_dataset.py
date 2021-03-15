@@ -26,9 +26,9 @@ def restructure_stimuli_csv_dataset_1(french_name, destination_path=None):
     new_data['#phone'] = old_data['vowel']
     new_data['context'] = old_data['context']
 
-    new_data['language'] = [old_data['language'][i][:2] for i in range(len(old_data['language']))]
+    new_data['language'] = [old_data['language'][i][:2].upper() for i in range(len(old_data['language']))]
     new_data['speaker'] = old_data['speaker']
-    new_data['dataset'] = ['ABX_Cogsci' for _ in range(len(old_data['context']))]
+    new_data['dataset'] = ['cogsci-2019' for _ in range(len(old_data['context']))]
 
     # Specific to zerospeech dataset
     new_data['prev_phone'] = [old_data['context'][i].split('_')[0] for i in range(len(old_data['context']))]
@@ -46,7 +46,7 @@ def restructure_triplets_dataset_1(name, destination_path=None):
     new_data = dict()
 
     new_data['subject_id'] = old_data['subject_id']
-    new_data['subject_language'] = old_data['subject_language.x']
+    new_data['subject_language'] = old_data['subject_language.x'][:2].str.upper()
     new_data['triplet_id'] = [i for i in range(len(old_data['subject_id']))]
 
     new_data['TGT_item'] = old_data['file_TGT']
@@ -62,9 +62,9 @@ def restructure_triplets_dataset_1(name, destination_path=None):
     new_data['speaker_OTH'] = old_data['speaker_OTH']
     new_data['speaker_X'] = old_data['speaker_X']
 
-    new_data['language_TGT'] = [old_data['file_TGT'][i].split('_')[1] for i in range(len(old_data['file_TGT']))]
-    new_data['language_OTH'] = [old_data['file_OTH'][i].split('_')[1] for i in range(len(old_data['file_OTH']))]
-    new_data['language_X'] = [old_data['file_X'][i].split('_')[1] for i in range(len(old_data['file_X']))]
+    new_data['language_TGT'] = [old_data['file_TGT'][i].split('_')[1][:2].upper() for i in range(len(old_data['file_TGT']))]
+    new_data['language_OTH'] = [old_data['file_OTH'][i].split('_')[1][:2].upper() for i in range(len(old_data['file_OTH']))]
+    new_data['language_X'] = [old_data['file_X'][i].split('_')[1][:2].upper() for i in range(len(old_data['file_X']))]
 
     new_data['phone_TGT'] = old_data['vowel_TGT']
     new_data['phone_OTH'] = old_data['vowel_OTH']
@@ -77,6 +77,21 @@ def restructure_triplets_dataset_1(name, destination_path=None):
     # Save the new csv
     new_data = pd.DataFrame(new_data)
     new_data.to_csv(destination_path)
+
+def correct_bin_ans(filename):
+
+    data = pd.read_csv(filename)
+    data = pd.DataFrame(data)
+
+    data['bin_user_ans'] = [int(data['user_ans'][i] == data['corr_ans'][i]) for i in range(len(data['corr_ans']))]
+    corr = [int(data['user_ans'][i] == data['corr_ans'][i]) for i in range(len(data['corr_ans']))]
+
+    for i in range(len(data['corr_ans'])):
+        if data['bin_user_ans'][i] == 0:
+            corr[i] = -1
+    data['bin_user_ans'] = corr
+    new_data = pd.DataFrame(data)
+    new_data.to_csv(filename)
 
 
 def BUILD_ARGPARSE():
@@ -98,10 +113,14 @@ if __name__ == '__main__':
 
     parser = BUILD_ARGPARSE()
     args = parser.parse_args(sys.argv[1:])
+
     restructure_triplets_dataset_1(
         '../CogSci-2019-Unsupervised-speech-and-human-perception/experiment/analysis/outputs/experiment_data.csv',
-        '../Cognitive_ML_datasets/data/cogsci_abx/abx_cogsci_dataset_human_experimental_data.csv')
+        '../../data/cogsci_abx/annotation_data/abx_cogsci_human_experimental_data.csv')
+        
+    
     restructure_stimuli_csv_dataset_1('../CogSci-2019-Unsupervised-speech-and-human-perception/stimulus_meta.csv',
-                                      '../Cognitive_ML_datasets/data/cogsci_abx/abx_cogsci_dataset_stimuli.csv')
+                                      '../../data/cogsci_abx/annotation_data/abx_cogsci_stimuli.csv')
 
+    correct_bin_ans('../../data/cogsci_abx/annotation_data/abx_cogsci_human_experimental_data.csv')
     print('Done')
