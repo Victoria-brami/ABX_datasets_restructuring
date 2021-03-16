@@ -159,7 +159,7 @@ def restructure_triplets_dataset_3_august(name, destination_path=None):
     new_data = dict()
 
     new_data['subject_id'] = old_data['subject_id']
-    new_data['subject_language'] = old_data['subject_language']
+    new_data['subject_language'] = [old_data['subject_language'][i][:2].upper() for i in range(len(old_data['subject_language']))]
     new_data['triplet_id'] = old_data['tripletid']
 
     new_data['TGT_item'] = old_data['item_TGT']
@@ -174,9 +174,9 @@ def restructure_triplets_dataset_3_august(name, destination_path=None):
     new_data['speaker_OTH'] = old_data['speaker_OTH']
     new_data['speaker_X'] = old_data['speaker_X']
 
-    new_data['language_TGT'] = old_data['subject_language.y']
-    new_data['language_OTH'] = old_data['subject_language.y']
-    new_data['language_X'] = old_data['subject_language.y']
+    new_data['language_TGT'] = [old_data['subject_language.y'][i][:2].upper() for i in range(len(old_data['subject_language.y']))]
+    new_data['language_OTH'] = [old_data['subject_language.y'][i][:2].upper() for i in range(len(old_data['subject_language.y']))]
+    new_data['language_X'] = [old_data['subject_language.y'][i][:2].upper() for i in range(len(old_data['subject_language.y']))]
 
     new_data['phone_TGT'] = old_data['phone_TGT']
     new_data['phone_OTH'] = old_data['phone_OTH']
@@ -184,12 +184,26 @@ def restructure_triplets_dataset_3_august(name, destination_path=None):
     new_data['context'] = old_data['context_TGT']
     new_data['prev_phone'] = ['NA' for _ in range(len(old_data['file_TGT']))]
     new_data['next_phone'] = ['NA' for _ in range(len(old_data['file_TGT']))]
-    new_data['dataset'] = ['pilot_Aug_2018' for _ in range(len(old_data['file_TGT']))]
+    new_data['dataset'] = ['pilot-aug-2018' for _ in range(len(old_data['file_TGT']))]
 
     # Save the new csv
     new_data = pd.DataFrame(new_data)
     new_data.to_csv(destination_path)
 
+def correct_bin_ans(filename):
+
+    data = pd.read_csv(filename)
+    data = pd.DataFrame(data)
+
+    data['bin_user_ans'] = [int(data['user_ans'][i] == data['corr_ans'][i]) for i in range(len(data['corr_ans']))]
+    corr = [int(data['user_ans'][i] == data['corr_ans'][i]) for i in range(len(data['corr_ans']))]
+
+    for i in range(len(data['corr_ans'])):
+        if data['bin_user_ans'][i] == 0:
+            corr[i] = -1
+    data['bin_user_ans'] = corr
+    new_data = pd.DataFrame(data)
+    new_data.to_csv(filename)
 
 def restructure_stimuli_dataset_3_august(name, destination_path=None):
     old_data = pd.read_csv(name)
@@ -204,12 +218,12 @@ def restructure_stimuli_dataset_3_august(name, destination_path=None):
     new_data['#phone'] = [*old_data['phone_TGT'], *old_data['phone_OTH'], *old_data['phone_X']]
     new_data['context'] = [*old_data['context_TGT'], *old_data['context_OTH'], *old_data['context_X']]
 
-    new_data['language'] = ['english' for _ in range(len(old_data['CORR_ANS']) * 3)]
+    new_data['language'] = ['EN' for _ in range(len(old_data['CORR_ANS']) * 3)]
     new_data['speaker'] = [*old_data['speaker_TGT'], *old_data['speaker_OTH'], *old_data['speaker_X']]
 
     new_data['prev_phone'] = ['NA' for _ in range(len(old_data['CORR_ANS']) * 3)]
     new_data['next_phone'] = ['NA' for _ in range(len(old_data['CORR_ANS']) * 3)]
-    new_data['dataset'] = ['pilote_aug_2018' for _ in range(len(old_data['CORR_ANS']) * 3)]
+    new_data['dataset'] = ['pilot-aug-2018' for _ in range(len(old_data['CORR_ANS']) * 3)]
 
     # Save the new csv
     new_data = pd.DataFrame(new_data)
@@ -235,7 +249,7 @@ if __name__ == '__main__':
     ### Build human responses
     NAME = '../geomphon-perception-ABX/experiments/pilot_july_2018/data/merged_results_cleaned.csv'
     DESTINATION = '../Cognitive_ML_datasets/data/pilote/pilote_data_july_2018_human_experimental_data.csv'
-    restructure_triplets_dataset_3_july(NAME, DESTINATION)
+    # restructure_triplets_dataset_3_july(NAME, DESTINATION)
 
     ### Restructure stimuli dataset
     NAME_JULY_STIMULI = '../geomphon-perception-ABX/experiments/pilot_july_2018/stimuli/item_meta_information.csv'
@@ -245,11 +259,12 @@ if __name__ == '__main__':
     """     B) August part    """
 
     NAME_3 = '../geomphon-perception-ABX/experiments/pilot_Aug_2018/analysis/geomphon_pilot_results_for_analysis.csv'
-    DESTINATION_3 = '../Cognitive_ML_datasets/data/pilote/pilote_data_aug_2018_human_experimental_results.csv'
-    # restructure_triplets_dataset_3_august(NAME_3, DESTINATION_3)
+    DESTINATION_3 = '../../data/pilot-aug-2018/annotation_data/pilot_aug_2018_human_experimental_data.csv'
+    restructure_triplets_dataset_3_august(NAME_3, DESTINATION_3)
+    correct_bin_ans(DESTINATION_3)
 
     NAME_AUG_STIMULI = '../geomphon-perception-ABX/experiments/pilot_Aug_2018/stimuli/item_meta_information.csv'
-    DESTINATION_AUG_STIMULI = '../Cognitive_ML_datasets/data/pilote/pilote_data_aug_2018_stimuli.csv'
-    # restructure_stimuli_dataset_3_august(NAME_AUG_STIMULI, DESTINATION_AUG_STIMULI)
+    DESTINATION_AUG_STIMULI = '../../data/pilot-aug-2018/annotation_data/pilot_aug_2018_stimuli.csv'
+    restructure_stimuli_dataset_3_august(NAME_AUG_STIMULI, DESTINATION_AUG_STIMULI)
 
     print('Done')
