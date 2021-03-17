@@ -41,7 +41,9 @@ class TestHumanCSVFileFormat(unittest.TestCase):
     # 4) Test each column format
     # 4) a) Test subject_id format
     def test_subject_id_format(self):
-        return None
+        random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
+        for i in random_indexes:
+            self.assertIsInstance(CSV_FILE['subject_id'][i], str)
 
     # 4) b) Test subject_language format
     def test_subject_language_format(self):
@@ -53,19 +55,31 @@ class TestHumanCSVFileFormat(unittest.TestCase):
 
     # 4) c) Test triplet_id format
     def test_triplet_id_format(self):
-        return None
+        random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
+        for i in random_indexes:
+            self.assertIsInstance(CSV_FILE['triplet_id'][i], str)
+            self.assertTrue(CSV_FILE['triplet_id'][i].startswith('triplet_'))
 
     # 4) d) Test TGT_item format
     def test_TGT_item_format(self):
-        return None
+        random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
+        for i in random_indexes:
+            self.assertIsInstance(CSV_FILE['TGT_item'][i], str)
+            self.assertTrue(CSV_FILE['TGT_item'][i].endswith('.wav'))
 
     # 4) e) Test OTH_item format
     def test_OTH_item_format(self):
-        return None
+        random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
+        for i in random_indexes:
+            self.assertIsInstance(CSV_FILE['OTH_item'][i], str)
+            self.assertTrue(CSV_FILE['OTH_item'][i].endswith('.wav'))
 
     # 4) f) Test X_item format
     def test_X_item_format(self):
-        return None
+        random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
+        for i in random_indexes:
+            self.assertIsInstance(CSV_FILE['X_item'][i], str)
+            self.assertTrue(CSV_FILE['X_item'][i].endswith('.wav'))
 
     # 4) g) Test corr_ans format
     def test_corr_ans_format(self):
@@ -120,11 +134,26 @@ class TestHumanCSVFileFormat(unittest.TestCase):
             self.assertTrue(len(CSV_FILE['language_OTH'][i]) == 2)
 
                                                             # 4) o) Test language_X format ?
-    # 4) p) Test phone_TGT format
+    # 4) p) Test phone_TGT format (not in capital letter, IPA alphabet)
+    def test_phone_TGT_format(self):
+        random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
+        for i in random_indexes:
+            self.assertIsInstance(CSV_FILE['phone_TGT'][i], str)
+            self.assertTrue(CSV_FILE['phone_TGT'][i].islower())
 
-    # 4) q) Test phone_OTH format
+    # 4) q) Test phone_OTH format (not in capital letter, IPA alphabet)
+    def test_phone_OTH_format(self):
+        random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
+        for i in random_indexes:
+            self.assertIsInstance(CSV_FILE['phone_OTH'][i], str)
+            self.assertTrue(CSV_FILE['phone_OTH'][i].islower())
 
-    # 4) r) Test phone_X format
+    # 4) r) Test phone_X format (not in capital letter, IPA alphabet)
+    def test_phone_X_format(self):
+        random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
+        for i in random_indexes:
+            self.assertIsInstance(CSV_FILE['phone_X'][i], str)
+            self.assertTrue(CSV_FILE['phone_X'][i].islower())
 
     # 4) s) Test context format
     def test_context_format(self):
@@ -137,19 +166,21 @@ class TestHumanCSVFileFormat(unittest.TestCase):
         random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
         for i in random_indexes:
             self.assertIsInstance(CSV_FILE['prev_phone'][i], str)
+            self.assertTrue(CSV_FILE['prev_phone'][i].islower())
 
     # 4) u) Test next_phone format
     def test_next_phone_format(self):
         random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
         for i in random_indexes:
             self.assertIsInstance(CSV_FILE['next_phone'][i], str)
+            self.assertTrue(CSV_FILE['next_phone'][i].islower())
 
     # 4) v) Test dataset format
     def test_dataset_key_format(self):
         random_indexes = np.random.randint(0, CSV_FILE.count()[0], 10)
         dataset_name = CSV_PATH_NAME.split('/')[-3]
         for i in random_indexes:
-            self.assertTrue(CSV_FILE['dataset'][i] == dataset_name)
+            self.assertEqual(CSV_FILE['dataset'][i], dataset_name)
 
 
 def customize_test(list_of_tests):

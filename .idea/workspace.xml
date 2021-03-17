@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="596dd17c-3546-47fb-80c2-ffa8dd7ed861" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/ABX_datasets_restructuring.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ABX_datasets_restructuring.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/format_tests/display_data_contents.py" beforeDir="false" afterPath="$PROJECT_DIR$/format_tests/display_data_contents.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restructuring/restructure_first_abx_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/restructuring/restructure_first_abx_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restructuring/restructure_pilot_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/restructuring/restructure_pilot_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restructuring/restructure_zero_speech_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/restructuring/restructure_zero_speech_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stimuli_wav/pilot_create_extracted_stimuli.py" beforeDir="false" afterPath="$PROJECT_DIR$/stimuli_wav/pilot_create_extracted_stimuli.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stimuli_wav/zero_speech_create_extracted_stimuli.py" beforeDir="false" afterPath="$PROJECT_DIR$/stimuli_wav/zero_speech_create_extracted_stimuli.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/format_tests/human_exp_format/test_human_exp_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/format_tests/human_exp_format/test_human_exp_format.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +32,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -159,7 +157,10 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="596dd17c-3546-47fb-80c2-ffa8dd7ed861" name="Default Changelist" comment="" />
@@ -169,5 +170,15 @@
       <updated>1615454642195</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="0" y="106" key="SettingsEditor" timestamp="1616002734452">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="0" y="106" key="SettingsEditor/0.0.1707.920@0.0.1707.920" timestamp="1616002734452" />
+    <state x="297" y="288" key="com.intellij.ide.util.TipDialog" timestamp="1616002342478">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="297" y="288" key="com.intellij.ide.util.TipDialog/0.0.1707.920@0.0.1707.920" timestamp="1616002342478" />
   </component>
 </project>
