@@ -106,6 +106,53 @@ def BUILD_ARGPARSE():
     return parser
 
 
+def try_to_link_wav_file_to_annotations():
+
+    new_x_items = []
+    new_tgt_items = []
+    new_oth_items = []
+    PATH_TO_DATA = '/home/coml/Documents/Victoria/'
+
+    HUMAN_DATA = pd.read_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
+    HUMAN_DATA = pd.DataFrame(HUMAN_DATA)
+    STIMULI_FRENCH_DATA = pd.read_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv', sep=',')
+    STIMULI_FRENCH_DATA = pd.DataFrame(STIMULI_FRENCH_DATA)
+    STIMULI_ENGLISH_DATA = pd.read_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv', sep=',')
+    STIMULI_ENGLISH_DATA = pd.DataFrame(STIMULI_ENGLISH_DATA)
+
+    print([col for col in STIMULI_ENGLISH_DATA.columns])
+    NB_LINES = HUMAN_DATA.count()[0]
+
+    for i in range(NB_LINES):
+        #look whether english or not (same for the 3 stimuli)
+        LANGUAGE = HUMAN_DATA['language_TGT'][i]
+        if LANGUAGE == 'EN':
+            TGT_SEARCHED_ROW = STIMULI_ENGLISH_DATA[STIMULI_ENGLISH_DATA['index'] == HUMAN_DATA['TGT_item'][i], '#file_extract'].values()[0]
+            OTH_SEARCHED_ROW = STIMULI_ENGLISH_DATA[STIMULI_ENGLISH_DATA['index'] == HUMAN_DATA['OTH_item'][i]]
+            X_SEARCHED_ROW = STIMULI_ENGLISH_DATA[STIMULI_ENGLISH_DATA['index'] == HUMAN_DATA['X_item'][i]]
+        elif LANGUAGE == 'FR':
+            TGT_SEARCHED_ROW = STIMULI_FRENCH_DATA[STIMULI_FRENCH_DATA['index'] == HUMAN_DATA['TGT_item'][i]]
+            OTH_SEARCHED_ROW = STIMULI_FRENCH_DATA[STIMULI_FRENCH_DATA['index'] == HUMAN_DATA['OTH_item'][i]]
+            X_SEARCHED_ROW = STIMULI_FRENCH_DATA[STIMULI_FRENCH_DATA['index'] == HUMAN_DATA['X_item'][i]]
+
+        print(type(TGT_SEARCHED_ROW['#file_extract']))
+        print(TGT_SEARCHED_ROW['#file_extract'].value())
+        print()
+        new_tgt_items.append(TGT_SEARCHED_ROW['#file_extract'])
+        new_oth_items.append(OTH_SEARCHED_ROW['#file_extract'])
+        new_x_items.append(X_SEARCHED_ROW['#file_extract'])
+
+    HUMAN_DATA['TGT_item'] = new_tgt_items
+    HUMAN_DATA['OTH_item'] = new_oth_items
+    HUMAN_DATA['X_item'] = new_x_items
+
+    HUMAN_DATA.to_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data_item_modif.csv')
+
+
+
+
+
+
 if __name__ == '__main__':
     """ SECOND DATASET """
     PATH_TO_DATA = '/home/coml/Documents/Victoria/'
@@ -113,11 +160,13 @@ if __name__ == '__main__':
     args = parser.parse_args(sys.argv[1:])
     # restructure_triplets_dataset_2('../interspeech-2020-perceptimatic/DATA/human_and_models.csv',
     #                                '../../data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
-
+    """
     restructure_triplets_dataset_2_bis(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/all_info_french_english_last.csv',
                                    PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
 
     restructure_stimuli_csv_dataset_2(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/french/all_aligned_clean_french.csv',
                                       PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/english/all_aligned_clean_english.csv',
                                       PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv')
+    """
+    try_to_link_wav_file_to_annotations()
     print('Done')

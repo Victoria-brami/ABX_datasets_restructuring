@@ -20,8 +20,8 @@ def restructure_stimuli_csv_dataset_1(french_name, destination_path=None):
     new_data = dict()
 
     new_data['index'] = old_data['indexnumber']
-    new_data['#file_source'] = old_data['int_filename']
-    new_data['#file_extract'] = old_data['int_filename']
+    new_data['#file_source'] = old_data['int_filename'].apply(lambda x: x.split('_')[0][0].upper() + x.split('_')[0][1:] + '_ABX_' + x.split('_')[1].upper() + '_clean' + '.wav')
+    new_data['#file_extract'] = old_data['int_filename'].apply(lambda x: x + '.wav')
     new_data['onset'] = old_data['onset']
     new_data['offset'] = old_data['offset']
     new_data['#phone'] = old_data['vowel']
@@ -50,9 +50,9 @@ def restructure_triplets_dataset_1(name, destination_path=None):
     new_data['subject_language'] = old_data['subject_language.x'].apply(lambda x: x[:2].upper())
     new_data['triplet_id'] = ['triplet_' + str(i) for i in range(len(old_data['subject_id']))]
 
-    new_data['TGT_item'] = old_data['file_TGT']
-    new_data['OTH_item'] = old_data['file_OTH']
-    new_data['X_item'] = old_data['file_X']
+    new_data['TGT_item'] = old_data['file_TGT'].apply(lambda x: x + '.wav')
+    new_data['OTH_item'] = old_data['file_OTH'].apply(lambda x: x + '.wav')
+    new_data['X_item'] = old_data['file_X'].apply(lambda x: x + '.wav')
 
     new_data['corr_ans'] = [old_data['corr_ans'][i][:1] for i in
                             range(len(old_data['subject_id']))]  # Equals to A if True, B otherwise

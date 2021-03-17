@@ -45,7 +45,7 @@ def main():
     count = 0
 
     # split the wavs
-    for i in range(0, len(stimuli_info['#file'])):
+    for i in range(0, len(stimuli_info['#file_source'])):
 
         index = stimuli_info['index'][i]
         onset = stimuli_info['onset'][i]
@@ -53,16 +53,16 @@ def main():
 
 
 
-        wav_file = args.source_dir + stimuli_info['#file'][i]
+        wav_file = args.source_dir + stimuli_info['#file_source'][i]
 
-        extracted_wav_file = args.output_dir + stimuli_info['#file'][i].split('.')[0] + '_sliced_' + str(index) + '.wav'
+        extracted_wav_file = args.output_dir + stimuli_info['#file_source'][i].split('.')[0] + '_sliced_' + str(index) + '.wav'
 
         if os.path.exists(wav_file):
             slice_wav(wav_file, onset, offset, extracted_wav_file)
 
         else:
-            print(stimuli_info['#file'][i])
-            problem_files.append(stimuli_info['#file'][i])
+            print(stimuli_info['#file_source'][i])
+            problem_files.append(stimuli_info['#file_source'][i])
 
         count += 1
 
