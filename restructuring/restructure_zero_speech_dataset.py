@@ -26,7 +26,9 @@ def restructure_stimuli_csv_dataset_2(french_name, english_name, destination_pat
     new_data = dict()
 
     new_data['index'] = [*old_french_data['index'], *old_english_data['index']]
-    new_data['#file'] = [*old_french_data['#file'].apply(lambda x: '1s_french/' + str(x) + '.wav'), *old_english_data['#file'].apply(lambda x: '1s_english/' + str(x) + '.wav')]
+    new_data['#file_source'] = [*old_french_data['#file'].apply(lambda x: '1s_french/' + str(x) + '.wav'), *old_english_data['#file'].apply(lambda x: '1s_english/' + str(x) + '.wav')]
+    new_data['#file_extract'] = [*old_french_data['#file'].apply(lambda x: '1s_french/' + str(x) + '.wav'),
+                                *old_english_data['#file'].apply(lambda x: '1s_english/' + str(x) + '.wav')]
     new_data['onset'] = [*old_french_data['onset'], *old_english_data['onset']]
     new_data['offset'] = [*old_french_data['offset'], *old_english_data['offset']]
     new_data['#phone'] = [*old_french_data['#phone'], *old_english_data['#phone']]
@@ -50,43 +52,6 @@ def restructure_stimuli_csv_dataset_2(french_name, english_name, destination_pat
     new_data.to_csv(destination_path)
 
 
-def restructure_triplets_dataset_2(name, destination_path=None):
-    old_data = pd.read_csv(name)
-    old_data = pd.DataFrame(old_data)
-
-    new_data = dict()
-
-    new_data['subject_id'] = old_data['individual']
-    new_data['subject_language'] = [old_data['language'][i][:2].upper() for i in range(len(old_data['next_phone']))]
-    new_data['triplet_id'] = old_data['filename']
-
-    new_data['TGT_item'] = old_data['TGT_item']
-    new_data['OTH_item'] = old_data['OTH_item']
-    new_data['X_item'] = old_data['X_item']
-
-    new_data['corr_ans'] = old_data['TGT_first']  # Equals to A if True, B otherwise
-    new_data['user_ans'] = old_data['correct_answer']
-    new_data['bin_user_ans'] = old_data['binarized_answer']
-
-    new_data['speaker_TGT'] = old_data['speaker_tgt_oth']
-    new_data['speaker_OTH'] = old_data['speaker_tgt_oth']
-    new_data['speaker_X'] = old_data['speaker_x']
-
-    new_data['language_TGT'] = [old_data['filename'][i][:2].upper() for i in range(len(old_data['next_phone']))]
-    new_data['language_OTH'] = [old_data['filename'][i][:2].upper() for i in range(len(old_data['next_phone']))]
-    new_data['language_X'] = [old_data['filename'][i][:2].upper() for i in range(len(old_data['next_phone']))]
-
-    new_data['phone_TGT'] = old_data['TGT']
-    new_data['phone_OTH'] = old_data['OTH']
-    new_data['phone_X'] = ['NA' for _ in range(len(old_data['next_phone']))]
-    new_data['context'] = [old_data['prev_phone'][i] + '_' + old_data['next_phone'][i] for i in
-                           range(len(old_data['next_phone']))]
-    new_data['prev_phone'] = old_data['prev_phone']
-    new_data['next_phone'] = old_data['next_phone']
-    new_data['dataset'] = ['zerospeech' for _ in range(len(old_data['next_phone']))]
-
-    new_data = pd.DataFrame(new_data)
-    new_data.to_csv(destination_path)
 
 def restructure_triplets_dataset_2_bis(name, destination_path=None):
     old_data = pd.read_csv(name)
@@ -94,15 +59,15 @@ def restructure_triplets_dataset_2_bis(name, destination_path=None):
 
     new_data = dict()
 
-    new_data['subject_id'] = old_data['individual']
-    new_data['subject_language'] = [old_data['language'][i][:2].upper() for i in range(len(old_data['next_phone']))]
-    new_data['triplet_id'] = old_data['filename']
+    new_data['subject_id'] = old_data['individual'].apply(lambda x: 'X_' + str(x))
+    new_data['subject_language'] = old_data['language'].apply(lambda x: x[:2].upper())
+    new_data['triplet_id'] = old_data['filename'].apply(lambda x: 'triplet_' + x)
 
     new_data['TGT_item'] = old_data['TGT_item']
     new_data['OTH_item'] = old_data['OTH_item']
     new_data['X_item'] = old_data['X_item']
 
-    new_data['corr_ans'] = old_data['TGT_first']  # Equals to A if True, B otherwise
+    new_data['corr_ans'] = old_data['TGT_first'].apply(lambda x: 'A')  # Equals to A if True, B otherwise
     new_data['user_ans'] = old_data['correct_answer']
     new_data['bin_user_ans'] = old_data['binarized_answer']
 
@@ -110,9 +75,9 @@ def restructure_triplets_dataset_2_bis(name, destination_path=None):
     new_data['speaker_OTH'] = old_data['speaker_tgt_oth']
     new_data['speaker_X'] = old_data['speaker_x']
 
-    new_data['language_TGT'] = [old_data['filename'][i][:2].upper() for i in range(len(old_data['next_phone']))]
-    new_data['language_OTH'] = [old_data['filename'][i][:2].upper() for i in range(len(old_data['next_phone']))]
-    new_data['language_X'] = [old_data['filename'][i][:2].upper() for i in range(len(old_data['next_phone']))]
+    new_data['language_TGT'] = old_data['filename'].apply(lambda x: x[:2].upper())
+    new_data['language_OTH'] = old_data['filename'].apply(lambda x: x[:2].upper())
+    new_data['language_X'] = old_data['filename'].apply(lambda x: x[:2].upper())
 
     new_data['phone_TGT'] = old_data['TGT']
     new_data['phone_OTH'] = old_data['OTH']
@@ -143,15 +108,16 @@ def BUILD_ARGPARSE():
 
 if __name__ == '__main__':
     """ SECOND DATASET """
+    PATH_TO_DATA = '/home/coml/Documents/Victoria/'
     parser = BUILD_ARGPARSE()
     args = parser.parse_args(sys.argv[1:])
-    restructure_triplets_dataset_2('../interspeech-2020-perceptimatic/DATA/human_and_models.csv',
-                                   '../../data/zero_speech/annotation_data/zerospeech_human_experimental_data.csv')
+    # restructure_triplets_dataset_2('../interspeech-2020-perceptimatic/DATA/human_and_models.csv',
+    #                                '../../data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
 
-    restructure_triplets_dataset_2_bis('../interspeech-2020-perceptimatic/DATA/all_info_french_english_last.csv',
-                                   '../../data/zero_speech/annotation_data/zerospeech_human_experimental_data_bis.csv')
+    restructure_triplets_dataset_2_bis(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/all_info_french_english_last.csv',
+                                   PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
 
-    restructure_stimuli_csv_dataset_2('../interspeech-2020-perceptimatic/DATA/french/all_aligned_clean_french.csv',
-                                      '../interspeech-2020-perceptimatic/DATA/english/all_aligned_clean_english.csv',
-                                      '../../data/zero_speech/annotation_data/zerospeech_stimuli.csv')
+    restructure_stimuli_csv_dataset_2(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/french/all_aligned_clean_french.csv',
+                                      PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/english/all_aligned_clean_english.csv',
+                                      PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv')
     print('Done')

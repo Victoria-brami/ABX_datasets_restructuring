@@ -22,7 +22,7 @@ def is_not_a_string(arg):
     print('{} is not a string'.format(arg))
 
 
-class TestCSVFileFormat(unittest.TestCase):
+class TestStimuliCSVFileFormat(unittest.TestCase):
 
     # 1) test file name format: must have the form '<dataset_name>_stimuli.csv'
     def test_csv_name_suffix(self):
@@ -42,10 +42,10 @@ class TestCSVFileFormat(unittest.TestCase):
 
     # 3) test keys list
     def test_key_contents(self):
-        self.assertTrue(len(CSV_FILE.keys()[1:]) == 11)
+        self.assertTrue(len(CSV_FILE.keys()[1:]) == 12)
         for key in CSV_FILE.keys()[1:]:
-            self.assertIn(key, ['index', '#file', 'onset', 'offset', '#phone', 'context',
-                                'language', 'speaker', 'prev_phone', 'next_phone', 'dataset'])
+            self.assertIn(key, ['index', '#file_source', '#file_extract', 'onset', 'offset', '#phone',
+                                'context', 'language', 'speaker', 'prev_phone', 'next_phone', 'dataset'])
 
     # 4) test each key format
 
