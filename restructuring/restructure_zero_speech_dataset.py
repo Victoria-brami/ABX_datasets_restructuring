@@ -16,9 +16,9 @@ import sys
 
 
 def restructure_stimuli_csv_dataset_2(french_name, english_name, destination_path=None):
-    old_french_data = pd.read_table(french_name)
+    old_french_data = pd.read_csv(french_name, sep=',')
     old_french_data = pd.DataFrame(old_french_data)
-    old_english_data = pd.read_table(english_name)
+    old_english_data = pd.read_csv(english_name, sep=',')
     old_english_data = pd.DataFrame(old_english_data)
     for col in old_french_data.columns:
         print(col)
@@ -106,6 +106,25 @@ def BUILD_ARGPARSE():
     return parser
 
 
+def build_extracted_wav_name(language, file, index):
+    """
+
+    Args:
+        language: (str) either FR or EN
+        file: (str) name of the source file (form 1s_french/4576.wav)
+        index: (int) corresponding index in stimuli file
+
+    Returns: 1s_french/4576_sliced_<index>.wav
+
+    """
+    if language == 'FR':
+        lang = 'french'
+    elif language == 'EN':
+        lang = 'english'
+
+    return '1s_{}/{}_sliced_{}.wav'.format(lang, file, index)
+
+
 def try_to_link_wav_file_to_annotations():
 
     new_x_items = []
@@ -115,9 +134,9 @@ def try_to_link_wav_file_to_annotations():
 
     HUMAN_DATA = pd.read_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
     HUMAN_DATA = pd.DataFrame(HUMAN_DATA)
-    STIMULI_FRENCH_DATA = pd.read_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv', sep=',')
+    STIMULI_FRENCH_DATA = pd.read_csv(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/french/all_aligned_clean_french.csv', sep=',')
     STIMULI_FRENCH_DATA = pd.DataFrame(STIMULI_FRENCH_DATA)
-    STIMULI_ENGLISH_DATA = pd.read_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv', sep=',')
+    STIMULI_ENGLISH_DATA = pd.read_csv(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/english/all_aligned_clean_english.csv', sep=',')
     STIMULI_ENGLISH_DATA = pd.DataFrame(STIMULI_ENGLISH_DATA)
 
     print([col for col in STIMULI_ENGLISH_DATA.columns])
@@ -127,7 +146,8 @@ def try_to_link_wav_file_to_annotations():
         #look whether english or not (same for the 3 stimuli)
         LANGUAGE = HUMAN_DATA['language_TGT'][i]
         if LANGUAGE == 'EN':
-            TGT_SEARCHED_ROW = STIMULI_ENGLISH_DATA[STIMULI_ENGLISH_DATA['index'] == HUMAN_DATA['TGT_item'][i], '#file_extract'].values()[0]
+            # TGT_SEARCHED_ROW = STIMULI_ENGLISH_DATA[STIMULI_ENGLISH_DATA['index'] == HUMAN_DATA['TGT_item'][i], '#file_extract'].values()[0]
+            TGT_SEARCHED_ROW = STIMULI_ENGLISH_DATA[STIMULI_ENGLISH_DATA['index'] == HUMAN_DATA['TGT_item'][i]]
             OTH_SEARCHED_ROW = STIMULI_ENGLISH_DATA[STIMULI_ENGLISH_DATA['index'] == HUMAN_DATA['OTH_item'][i]]
             X_SEARCHED_ROW = STIMULI_ENGLISH_DATA[STIMULI_ENGLISH_DATA['index'] == HUMAN_DATA['X_item'][i]]
         elif LANGUAGE == 'FR':
@@ -135,12 +155,22 @@ def try_to_link_wav_file_to_annotations():
             OTH_SEARCHED_ROW = STIMULI_FRENCH_DATA[STIMULI_FRENCH_DATA['index'] == HUMAN_DATA['OTH_item'][i]]
             X_SEARCHED_ROW = STIMULI_FRENCH_DATA[STIMULI_FRENCH_DATA['index'] == HUMAN_DATA['X_item'][i]]
 
-        print(type(TGT_SEARCHED_ROW['#file_extract']))
-        print(TGT_SEARCHED_ROW['#file_extract'].value())
+        print('TGT: {}'.format(TGT_SEARCHED_ROW['#file']))
+        print('OTH: {}'.format(OTH_SEARCHED_ROW['#file']))
+        print('X: {}'.format(X_SEARCHED_ROW['#file']))
         print()
-        new_tgt_items.append(TGT_SEARCHED_ROW['#file_extract'])
-        new_oth_items.append(OTH_SEARCHED_ROW['#file_extract'])
-        new_x_items.append(X_SEARCHED_ROW['#file_extract'])
+
+        TGT_SEARCHED_FILE = TGT_SEARCHED_ROW['#file'].item()
+        OTH_SEARCHED_FILE = OTH_SEARCHED_ROW['#file'].item()
+        X_SEARCHED_FILE = X_SEARCHED_ROW['#file'].item()
+
+        TGT_SEARCHED_INDEX = TGT_SEARCHED_ROW['index'].item()
+        OTH_SEARCHED_INDEX = OTH_SEARCHED_ROW['index'].item()
+        X_SEARCHED_INDEX = X_SEARCHED_ROW['index'].item()
+
+        new_tgt_items.append(build_extracted_wav_name(LANGUAGE, TGT_SEARCHED_FILE, TGT_SEARCHED_INDEX))
+        new_oth_items.append(build_extracted_wav_name(LANGUAGE, OTH_SEARCHED_FILE, OTH_SEARCHED_INDEX))
+        new_x_items.append(build_extracted_wav_name(LANGUAGE, X_SEARCHED_FILE, X_SEARCHED_INDEX))
 
     HUMAN_DATA['TGT_item'] = new_tgt_items
     HUMAN_DATA['OTH_item'] = new_oth_items
@@ -149,7 +179,21 @@ def try_to_link_wav_file_to_annotations():
     HUMAN_DATA.to_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data_item_modif.csv')
 
 
+def rename_stimuli(filename):
 
+    STIMULI_DATA = pd.read_csv(filename)
+    STIMULI_DATA = pd.DataFrame(STIMULI_DATA)
+
+    extracted_wavs = []
+
+    for i in range(STIMULI_DATA.count()[0]):
+        source_name = STIMULI_DATA['#file_source'][i].split('.')[0]
+        index = STIMULI_DATA['index'][i]
+
+        extracted_wavs.append('{}_sliced_{}.wav'.format(source_name, index))
+
+    STIMULI_DATA['#file_extract'] = extracted_wavs
+    STIMULI_DATA.to_csv(filename)
 
 
 
@@ -163,10 +207,11 @@ if __name__ == '__main__':
     """
     restructure_triplets_dataset_2_bis(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/all_info_french_english_last.csv',
                                    PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
-
+    """
     restructure_stimuli_csv_dataset_2(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/french/all_aligned_clean_french.csv',
                                       PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/english/all_aligned_clean_english.csv',
                                       PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv')
-    """
-    try_to_link_wav_file_to_annotations()
+
+    # try_to_link_wav_file_to_annotations()
+    rename_stimuli(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv')
     print('Done')
