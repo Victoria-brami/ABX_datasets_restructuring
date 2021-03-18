@@ -1,6 +1,7 @@
 import pandas as pd
 import os.path as osp
 import argparse
+from random import randint
 
 PATH_TO_DATA_FOLDER = '/home/coml/Documents/Victoria/data'
 
@@ -39,38 +40,45 @@ CSV_STIMULI_FILE_4 = pd.DataFrame(CSV_STIMULI_FILE_4)
 
 
 def display_format():
-    INDEX = 100
+    INDEX = randint(0, 1500)
+    print('Index: ', INDEX)
+    print()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--key_list', type=list, default=['TGT_item'])
+    parser.add_argument('--key_list', type=list, default=['TGT_item', 'OTH_item', 'X_item'])
     args = parser.parse_args()
 
     for key in args.key_list:
-        # print('COGSCI 2019')
-        # print('   {}: {}'.format(key, CSV_FILE_1[key][INDEX]), type(CSV_FILE_1[key][INDEX]))
-        # print('   {} source: {}'.format(key, CSV_STIMULI_FILE_1['#file_source'][INDEX]), type(CSV_STIMULI_FILE_1['#file_source'][INDEX]))
-        # print('   {}: {} extract'.format(key, CSV_STIMULI_FILE_1['#file_extract'][INDEX]), type(CSV_STIMULI_FILE_1['#file_extract'][INDEX]))
+        print('COGSCI 2019')
+        print('   {}: {}'.format(key, CSV_FILE_1[key][INDEX]), type(CSV_FILE_1[key][INDEX]))
         print('ZEROSPEECH')
         print('   {}: {}'.format(key, CSV_FILE_2[key][INDEX]), type(CSV_FILE_2[key][INDEX]))
-        print('   {} source: {}'.format(key, CSV_STIMULI_FILE_2['#file_source'][INDEX]), type(CSV_STIMULI_FILE_2['#file_extract'][INDEX]))
-        print('   {} extract: {}'.format(key, CSV_STIMULI_FILE_2['#file_extract'][INDEX]), type(CSV_STIMULI_FILE_2['#file_extract'][INDEX]))
         print('PILOT JULY 2018')
         print('   {}: {}'.format(key, CSV_FILE_3[key][INDEX]), type(CSV_FILE_3[key][INDEX]))
-        print('   {} source: {}'.format(key, CSV_STIMULI_FILE_3['#file_source'][INDEX]), type(CSV_STIMULI_FILE_3['#file_source'][INDEX]))
-        print('   {} extract: {}'.format(key, CSV_STIMULI_FILE_3['#file_extract'][INDEX]), type(CSV_STIMULI_FILE_3['#file_extract'][INDEX]))
-        # print('PILOT AUGUST 2018')
-        # print('   {}: {}'.format(key, CSV_FILE_4[key][INDEX]), type(CSV_FILE_4[key][INDEX]))
-        # print('   {} source: {}'.format(key, CSV_STIMULI_FILE_4['#file_source'][INDEX]), type(CSV_STIMULI_FILE_4['#file_source'][INDEX]))
-        # print('   {} extract: {}'.format(key, CSV_STIMULI_FILE_4['#file_extract'][INDEX]), type(CSV_STIMULI_FILE_4['#file_extract'][INDEX]))
+        print('PILOT AUGUST 2018')
+        print('   {}: {}'.format(key, CSV_FILE_4[key][INDEX]), type(CSV_FILE_4[key][INDEX]))
         print()
-        print('   {} extract: {}'.format(key, CSV_STIMULI_FILE_1['index'][INDEX]),
-              type(CSV_STIMULI_FILE_4['#file_extract'][INDEX]))
-        print('   {} extract: {}'.format(key, CSV_STIMULI_FILE_2['index'][INDEX]),
-              type(CSV_STIMULI_FILE_4['#file_extract'][INDEX]))
-        print('   {} extract: {}'.format(key, CSV_STIMULI_FILE_3['index'][INDEX]),
-              type(CSV_STIMULI_FILE_4['#file_extract'][INDEX]))
-        print('   {} extract: {}'.format(key, CSV_STIMULI_FILE_4['index'][INDEX]),
-              type(CSV_STIMULI_FILE_4['#file_extract'][INDEX]))
+
+def display_stimuli_format():
+    INDEX = randint(0, 400)
+    INDEX = 191
+    print('Index: ', INDEX)
+    print()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--key_list', type=list, default=['dataset'])
+    args = parser.parse_args()
+
+    for key in args.key_list:
+        print('COGSCI 2019')
+        print('   {}: {}'.format(key, CSV_STIMULI_FILE_1[key][INDEX]), type(CSV_STIMULI_FILE_1[key][INDEX]))
+        print('ZEROSPEECH')
+        print('   {}: {}'.format(key, CSV_STIMULI_FILE_2[key][INDEX]), type(CSV_STIMULI_FILE_2[key][INDEX]))
+        print('PILOT JULY 2018')
+        print('   {}: {}'.format(key, CSV_STIMULI_FILE_3[key][INDEX]), type(CSV_STIMULI_FILE_3[key][INDEX]))
+        print('PILOT AUGUST 2018')
+        print('   {}: {}'.format(key, CSV_STIMULI_FILE_4[key][INDEX]), type(CSV_STIMULI_FILE_4[key][INDEX]))
         print()
+
 
 if __name__ == '__main__':
     display_format()
+    # display_stimuli_format()

@@ -112,6 +112,7 @@ if __name__ == '__main__':
             os.mkdir(osp.join(WAV_EXTRACTED_FOLDER, TGT_stimuli_folder_part_3))
 
         extracted_wav_file = WAV_EXTRACTED_FOLDER  + '/' + TGT_stimuli_folder_part_3  + '/' + TGT_f_prefix + '_sliced_' + str(TGT_index) + '.wav'
+        print('TGT EXTRACT', extracted_wav_file)
         slice_wav(TGT_wav_file, TGT_onset, TGT_offset, extracted_wav_file)
         TGT_files.append('/'.join(extracted_wav_file.split('/')[-4:]))
 
@@ -122,7 +123,7 @@ if __name__ == '__main__':
         OTH_wav_file = WAV_SOURCE_FOLDER + stimuli_info['file_OTH'][i] + '.WAV.wav'
 
         OTH_stimuli_folder = stimuli_info['file_OTH'][i].split('/')
-        OTH_f_prefix = TGT_stimuli_folder.pop()
+        OTH_f_prefix = OTH_stimuli_folder.pop()
         OTH_stimuli_folder_part_1 = '/'.join(OTH_stimuli_folder[:1])
         OTH_stimuli_folder_part_2 = '/'.join(OTH_stimuli_folder[:2])
         OTH_stimuli_folder_part_3 = '/'.join(OTH_stimuli_folder[:3])
@@ -136,6 +137,7 @@ if __name__ == '__main__':
 
         extracted_wav_file = WAV_EXTRACTED_FOLDER + '/' + OTH_stimuli_folder_part_3 + '/' + OTH_f_prefix + '_sliced_' + str(
             OTH_index) + '.wav'
+        print('OTH EXTRACT', extracted_wav_file)
         slice_wav(OTH_wav_file, OTH_onset, OTH_offset, extracted_wav_file)
         OTH_files.append('/'.join(extracted_wav_file.split('/')[-4:]))
 
@@ -146,7 +148,7 @@ if __name__ == '__main__':
         X_wav_file = WAV_SOURCE_FOLDER + stimuli_info['file_X'][i] + '.WAV.wav'
 
         X_stimuli_folder = stimuli_info['file_X'][i].split('/')
-        X_f_prefix = TGT_stimuli_folder.pop()
+        X_f_prefix = X_stimuli_folder.pop()
         X_stimuli_folder_part_1 = '/'.join(X_stimuli_folder[:1])
         X_stimuli_folder_part_2 = '/'.join(X_stimuli_folder[:2])
         X_stimuli_folder_part_3 = '/'.join(X_stimuli_folder[:3])
@@ -160,8 +162,10 @@ if __name__ == '__main__':
 
         extracted_wav_file = WAV_EXTRACTED_FOLDER + '/' + X_stimuli_folder_part_3 + '/' + X_f_prefix + '_sliced_' + str(
             X_index) + '.wav'
+        print('X EXTRACT', extracted_wav_file)
         slice_wav(X_wav_file, X_onset, X_offset, extracted_wav_file)
         X_files.append('/'.join(extracted_wav_file.split('/')[-4:]))
+        print()
 
     stimuli_info['TGT_item'] = TGT_indexes
     stimuli_info['TGT_filename'] = TGT_files

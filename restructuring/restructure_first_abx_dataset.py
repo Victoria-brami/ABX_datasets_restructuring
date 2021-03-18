@@ -54,8 +54,7 @@ def restructure_triplets_dataset_1(name, destination_path=None):
     new_data['OTH_item'] = old_data['file_OTH'].apply(lambda x: x + '.wav')
     new_data['X_item'] = old_data['file_X'].apply(lambda x: x + '.wav')
 
-    new_data['corr_ans'] = [old_data['corr_ans'][i][:1] for i in
-                            range(len(old_data['subject_id']))]  # Equals to A if True, B otherwise
+    new_data['TGT_first'] = old_data['corr_ans'].apply(lambda x: x.startswith('A')) # Equals to A if True, B otherwise
     new_data['user_ans'] = old_data['user_resp']
     new_data['bin_user_ans'] = old_data['user_resp']
 
@@ -109,19 +108,42 @@ def BUILD_ARGPARSE():
 
     return parser
 
+def read_correct_ans(name, destination_path=None):
+
+    old_data = pd.read_csv(name)
+    old_data = pd.DataFrame(old_data)
+
+    new_data = dict()
+    new_data['triplet_id'] = old_data['tripletid']
+    new_data['first_sound'] = old_data['first_sound']
+    new_data['second_sound'] = old_data['second_sound']
+    new_data['corr_ans'] = old_data['corr_ans']
+    new_data['user_resp'] = old_data['user_resp']
+    new_data['user_corr'] = old_data['user_corr']
+
+    new_data = pd.DataFrame(new_data)
+    new_data.to_csv(destination_path)
+
 
 if __name__ == '__main__':
     """ First DATASET """
 
     PATH_TO_DATA = '/home/coml/Documents/Victoria/'
 
+    NAME_1 = PATH_TO_DATA  + 'datasets_manipulation/CogSci-2019-Unsupervised-speech-and-human-perception/experiment/analysis/outputs/experiment_data.csv'
+    NAME_2 = PATH_TO_DATA  + 'datasets_manipulation/CogSci-2019-Unsupervised-speech-and-human-perception/experiment/analysis/outputs/experiment_data_tuned.csv'
+
+    read_correct_ans(NAME_1, NAME_2)
+
+
     restructure_triplets_dataset_1(
         PATH_TO_DATA  + 'datasets_manipulation/CogSci-2019-Unsupervised-speech-and-human-perception/experiment/analysis/outputs/experiment_data.csv',
         PATH_TO_DATA  + 'data/cogsci-2019/annotation_data/cogsci-2019_human_experimental_data.csv')
         
-    
+    """
     restructure_stimuli_csv_dataset_1(PATH_TO_DATA  + 'datasets_manipulation/CogSci-2019-Unsupervised-speech-and-human-perception/stimulus_meta.csv',
                                       PATH_TO_DATA  + 'data/cogsci-2019/annotation_data/cogsci-2019_stimuli.csv')
 
     correct_bin_ans(PATH_TO_DATA  + 'data/cogsci-2019/annotation_data/cogsci-2019_human_experimental_data.csv')
     print('Done')
+    """

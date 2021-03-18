@@ -176,7 +176,7 @@ def try_to_link_wav_file_to_annotations():
     HUMAN_DATA['OTH_item'] = new_oth_items
     HUMAN_DATA['X_item'] = new_x_items
 
-    HUMAN_DATA.to_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data_item_modif.csv')
+    HUMAN_DATA.to_csv(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
 
 
 def rename_stimuli(filename):
@@ -196,7 +196,6 @@ def rename_stimuli(filename):
     STIMULI_DATA.to_csv(filename)
 
 
-
 if __name__ == '__main__':
     """ SECOND DATASET """
     PATH_TO_DATA = '/home/coml/Documents/Victoria/'
@@ -212,6 +211,7 @@ if __name__ == '__main__':
                                       PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/english/all_aligned_clean_english.csv',
                                       PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv')
 
-    # try_to_link_wav_file_to_annotations()
+    try_to_link_wav_file_to_annotations()
     rename_stimuli(PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv')
+
     print('Done')
