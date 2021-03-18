@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="596dd17c-3546-47fb-80c2-ffa8dd7ed861" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ABX_datasets_restructuring.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ABX_datasets_restructuring.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/restructuring/pilot_july_correlate_extracted_sound.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/restructuring/restructure_pilot_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/restructuring/restructure_pilot_dataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/restructuring/restructure_zero_speech_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/restructuring/restructure_zero_speech_dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stimuli_wav/pilot_create_extracted_stimuli.py" beforeDir="false" afterPath="$PROJECT_DIR$/stimuli_wav/pilot_create_extracted_stimuli.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +42,7 @@
       <recent name="$PROJECT_DIR$/restructuring" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.restructure_zero_speech_dataset">
+  <component name="RunManager" selected="Python.restructure_pilot_dataset">
     <configuration name="display_data_contents" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ABX_datasets_restructuring" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -84,7 +85,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="restructure_first_abx_dataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="pilot_july_correlate_extracted_sound" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ABX_datasets_restructuring" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -96,7 +97,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/restructuring/restructure_first_abx_dataset.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/restructuring/pilot_july_correlate_extracted_sound.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -149,11 +150,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.restructure_zero_speech_dataset" />
-        <item itemvalue="Python.display_data_contents" />
         <item itemvalue="Python.restructure_pilot_dataset" />
         <item itemvalue="Python.pilot_create_extracted_stimuli" />
-        <item itemvalue="Python.restructure_first_abx_dataset" />
+        <item itemvalue="Python.pilot_july_correlate_extracted_sound" />
+        <item itemvalue="Python.restructure_zero_speech_dataset" />
+        <item itemvalue="Python.display_data_contents" />
       </list>
     </recent_temporary>
   </component>

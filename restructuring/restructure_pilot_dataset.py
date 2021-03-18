@@ -87,7 +87,7 @@ def restructure_triplets_dataset_3_july(name, destination_path=None):
     new_data['OTH_item'] = old_data['file_OTH']
     new_data['X_item'] = old_data['file_X']
 
-    new_data['corr_ans'] = old_data['presentation_order'].apply(lambda x: 'A')
+    new_data['TGT_first'] = old_data['presentation_order'].apply(lambda x: int(x.startswith('A')))
     new_data['user_ans'] = [int(old_data['first_sound'][i] == correct_answer[i]) for i in
                             range(len(old_data['first_sound']))]
     new_data['bin_user_ans'] = [int(old_data['first_sound'][i] == correct_answer[i]) for i in
@@ -120,17 +120,34 @@ def restructure_triplets_dataset_3_july(name, destination_path=None):
     new_data.to_csv(destination_path)
 
 
+def correct_bin_ans_july(filename):
+    data = pd.read_csv(filename)
+    data = pd.DataFrame(data)
+
+    corr = [1 for _ in range(len(data['TGT_first']))]
+
+    for i in range(len(data['TGT_first'])):
+        if data['bin_user_ans'][i] == 0:
+            corr[i] = -1
+    data['user_ans'] = corr
+    data['bin_user_ans'] = corr
+
+    new_data = pd.DataFrame(data)
+    new_data.to_csv(filename)
+
+
+
 def restructure_stimuli_dataset_3_july(name, destination_path=None):
     old_data = pd.read_csv(name)
     old_data = pd.DataFrame(old_data)
 
     new_data = dict()
 
-    new_data['index'] = [i for i in range(1, 1 + 3 * len(old_data['file_X']))]
+    new_data['index'] = [*old_data['TGT_item'], *old_data['OTH_item'], *old_data['X_item']]
     new_data['#file_source'] = [*old_data['file_TGT'].apply(lambda x: x + '.WAV.wav'),
                                 *old_data['file_OTH'].apply(lambda x: x + '.WAV.wav'),
                                 *old_data['file_X'].apply(lambda x: x + '.WAV.wav')]
-    new_data['#file_extract'] = [*old_data['file_TGT'], *old_data['file_OTH'], *old_data['file_X']]
+    new_data['#file_extract'] = [*old_data['TGT_filename'], *old_data['OTH_filename'], *old_data['X_filename']]
     new_data['onset'] = [*old_data['onset_TGT'], *old_data['onset_OTH'], *old_data['onset_X']]
     new_data['offset'] = [*old_data['offset_TGT'], *old_data['offset_OTH'], *old_data['offset_X']]
     new_data['#phone'] = [*old_data['Target phone'], *old_data['Other phone'], *old_data['phone2_X']]
@@ -153,20 +170,6 @@ def restructure_stimuli_dataset_3_july(name, destination_path=None):
     new_data.to_csv(destination_path)
 
 
-def correct_bin_ans_july(filename):
-    data = pd.read_csv(filename)
-    data = pd.DataFrame(data)
-
-    corr = [1 for _ in range(len(data['corr_ans']))]
-
-    for i in range(len(data['corr_ans'])):
-        if data['bin_user_ans'][i] == 0:
-            corr[i] = -1
-    data['user_ans'] = corr
-    data['bin_user_ans'] = corr
-
-    new_data = pd.DataFrame(data)
-    new_data.to_csv(filename)
 
 
 ########################################################################################################################
@@ -282,7 +285,7 @@ if __name__ == '__main__':
     correct_bin_ans_july(DESTINATION)
 
     ### Restructure stimuli dataset
-    NAME_JULY_STIMULI = '../../datasets_manipulation/first-geomphon-perception-ABX/experiments/pilot_july_2018/stimuli/item_meta_information.csv'
+    NAME_JULY_STIMULI = '../../datasets_manipulation/first-geomphon-perception-ABX/experiments/pilot_july_2018/stimuli/item_meta_information_tuned.csv'
     DESTINATION_JULY_STIMULI = '../../data/pilot-july-2018/annotation_data/pilot-july-2018_stimuli.csv'
     restructure_stimuli_dataset_3_july(NAME_JULY_STIMULI, DESTINATION_JULY_STIMULI)
 
@@ -290,11 +293,11 @@ if __name__ == '__main__':
 
     NAME_3 = '../../datasets_manipulation/first-geomphon-perception-ABX/experiments/pilot_Aug_2018/analysis/geomphon_pilot_results_for_analysis.csv'
     DESTINATION_3 = '../../data/pilot-aug-2018/annotation_data/pilot-aug-2018_human_experimental_data.csv'
-    restructure_triplets_dataset_3_august(NAME_3, DESTINATION_3)
-    correct_bin_ans(DESTINATION_3)
+    # restructure_triplets_dataset_3_august(NAME_3, DESTINATION_3)
+    # correct_bin_ans(DESTINATION_3)
 
     NAME_AUG_STIMULI = '../geomphon-perception-ABX/experiments/pilot_Aug_2018/stimuli/item_meta_information.csv'
     DESTINATION_AUG_STIMULI = '../../data/pilot-aug-2018/annotation_data/pilot-aug-2018_stimuli.csv'
-    restructure_stimuli_dataset_3_august(NAME_AUG_STIMULI, DESTINATION_AUG_STIMULI)
+    # restructure_stimuli_dataset_3_august(NAME_AUG_STIMULI, DESTINATION_AUG_STIMULI)
 
     print('Done')

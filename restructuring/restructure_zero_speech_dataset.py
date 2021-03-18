@@ -67,7 +67,7 @@ def restructure_triplets_dataset_2_bis(name, destination_path=None):
     new_data['OTH_item'] = old_data['OTH_item']
     new_data['X_item'] = old_data['X_item']
 
-    new_data['corr_ans'] = old_data['TGT_first'].apply(lambda x: 'A')  # Equals to A if True, B otherwise
+    new_data['TGT_first'] = old_data['TGT_first']
     new_data['user_ans'] = old_data['correct_answer']
     new_data['bin_user_ans'] = old_data['binarized_answer']
 
@@ -204,10 +204,10 @@ if __name__ == '__main__':
     args = parser.parse_args(sys.argv[1:])
     # restructure_triplets_dataset_2('../interspeech-2020-perceptimatic/DATA/human_and_models.csv',
     #                                '../../data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
-    """
+
     restructure_triplets_dataset_2_bis(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/all_info_french_english_last.csv',
                                    PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
-    """
+
     restructure_stimuli_csv_dataset_2(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/french/all_aligned_clean_french.csv',
                                       PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/english/all_aligned_clean_english.csv',
                                       PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_stimuli.csv')
