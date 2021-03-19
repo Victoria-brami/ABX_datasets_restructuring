@@ -44,7 +44,7 @@ def display_format():
     print('Index: ', INDEX)
     print()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--key_list', type=list, default=['TGT_item', 'OTH_item', 'X_item'])
+    parser.add_argument('--key_list', type=list, default=['phone_TGT', 'context'])
     args = parser.parse_args()
 
     for key in args.key_list:

@@ -12,6 +12,32 @@ import sys
             3) Human answers on those triplets tests.
 """
 
+IPA_TRANSCRIPTION = {
+    'UH': 'ʊ',
+    'AE': 'æ',
+    'AH': 'ʌ',
+    'IH': 'ɪ' ,
+    'U': 'u',
+    'E': 'e',
+    'I': 'i',
+    'Y': 'y',
+    'OE': 'œ',
+    'O': 'ɔ',
+    'SH': 'ʃ',
+    'Z': 'z',
+    'D': 'd',
+    'F': 'f',
+    'P': 'p',
+    'B': 'b',
+    'V': 'v',
+    'S': 's',
+    'G':'g',
+    'K':'k',
+    'A': 'a'   # SH transcription?
+}
+
+
+
 
 def restructure_stimuli_csv_dataset_1(french_name, destination_path=None):
     old_data = pd.read_csv(french_name, sep=';')
@@ -24,7 +50,7 @@ def restructure_stimuli_csv_dataset_1(french_name, destination_path=None):
     new_data['#file_extract'] = old_data['int_filename'].apply(lambda x: x + '.wav')
     new_data['onset'] = old_data['onset']
     new_data['offset'] = old_data['offset']
-    new_data['#phone'] = old_data['vowel']
+    new_data['#phone'] = old_data['vowel'].apply(lambda x: IPA_TRANSCRIPTION[x])
     new_data['context'] = old_data['context']
 
     new_data['language'] = [old_data['language'][i][:2].upper() for i in range(len(old_data['language']))]
@@ -62,17 +88,20 @@ def restructure_triplets_dataset_1(name, destination_path=None):
     new_data['speaker_OTH'] = old_data['speaker_OTH']
     new_data['speaker_X'] = old_data['speaker_X']
 
-    new_data['language_TGT'] = [old_data['file_TGT'][i].split('_')[1][:2].upper() for i in range(len(old_data['file_TGT']))]
-    new_data['language_OTH'] = [old_data['file_OTH'][i].split('_')[1][:2].upper() for i in range(len(old_data['file_OTH']))]
-    new_data['language_X'] = [old_data['file_X'][i].split('_')[1][:2].upper() for i in range(len(old_data['file_X']))]
+    new_data['language_TGT'] = old_data['file_TGT'].apply(lambda x: x.split('_')[1][:2].upper())
+    new_data['language_OTH'] = old_data['file_OTH'].apply(lambda x: x.split('_')[1][:2].upper())
+    new_data['language_X'] = old_data['file_X'].apply(lambda x: x.split('_')[1][:2].upper())
 
-    new_data['phone_TGT'] = old_data['vowel_TGT']
-    new_data['phone_OTH'] = old_data['vowel_OTH']
-    new_data['phone_X'] = old_data['vowel_X']
-    new_data['context'] = old_data['context']
-    new_data['prev_phone'] = [old_data['context'][i].split('_')[0] for i in range(len(old_data['context']))]
-    new_data['next_phone'] = [old_data['context'][i].split('_')[-1] for i in range(len(old_data['context']))]
-    new_data['dataset'] = ['cogsci-2019' for _ in range(len(old_data['context']))]
+    new_data['phone_TGT'] = old_data['vowel_TGT'].apply(lambda x: IPA_TRANSCRIPTION[x])
+    new_data['phone_OTH'] = old_data['vowel_OTH'].apply(lambda x: IPA_TRANSCRIPTION[x])
+    new_data['phone_X'] = old_data['vowel_X'].apply(lambda x: IPA_TRANSCRIPTION[x])
+
+    new_data['context'] = old_data['context'].apply(lambda x: IPA_TRANSCRIPTION[x.split('_')[0]] + '_' + IPA_TRANSCRIPTION[x.split('_')[1]])
+    new_data['prev_phone'] = old_data['context'].apply(lambda x: IPA_TRANSCRIPTION[x.split('_')[0]] + '_' + IPA_TRANSCRIPTION[x.split('_')[1]])
+    new_data['next_phone'] = old_data['context'].apply(lambda x: IPA_TRANSCRIPTION[x.split('_')[0]] + '_' + IPA_TRANSCRIPTION[x.split('_')[1]])
+
+    new_data['nb_stimuli'] = old_data['order'].apply(lambda x: int(x[:-1]) - 16)
+    new_data['dataset'] = old_data['context'].apply(lambda x: 'cogsci-2019')
 
     # Save the new csv
     new_data = pd.DataFrame(new_data)

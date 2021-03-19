@@ -10,26 +10,38 @@ import pandas as pd
             3) Human answers on those triplets tests.
 """
 
-phone_word_dict = {
-    'f': 'F',
-    't': 'T',
-    'k': 'K',
-    'p': 'P',
-    'i': 'HEE',
-    'u': 'WHO',
-    'ÊŒ': 'HUH',
-    'ÊŠ': 'HOO',
-    'É‘': 'HA',
-    'ɑ': 'HA',
-    'Ã¦': 'HAE',
-    'Î': 'TH',
-    'θ': 'TH',
-    'ʃ': 'SH',
-    's': 'SS',
-    'æ': 'HAE',
-    'ʊ': 'HOO',
-    'ʌ': 'HUH',
-    'Êƒ': 'SH'
+
+IPA_TRANSCRIPTION = {
+    'aa': 'a',
+    'ah': 'ʌ',
+    'ae': 'æ',
+    'tcl': 't̚',
+    'dx': 'ɾ',
+    'hh': 'h',
+    'w': 'w',
+    'd': 'd',
+    't': 't',
+    'k': 'k',
+    'r': 'ɹ',
+    'g': 'g',
+    'n': 'n',
+    'nx': 'ɾ̃',
+    'hv': 'ɦ',
+    'dcl': 'd̚',
+    's': 's',
+    'f': 'f',
+    'm': 'm',
+    'l': 'l',
+    'iy': 'i',
+    'uh': 'ʊ',
+    'kcl': 'k̚',
+    'uw': 'u',
+    'pcl': 'p̚',
+    'b': 'b',
+    'p': 'p',
+    'z': 'z',
+    'dh': 'ð',
+    'q': 'ʔ'
 }
 
 
@@ -101,13 +113,15 @@ def restructure_triplets_dataset_3_july(name, destination_path=None):
     new_data['language_OTH'] = old_data['dialect_OTH'].apply(lambda x: 'EN_' + x)
     new_data['language_X'] = old_data['dialect_X'].apply(lambda x: 'EN_' + x)
 
-    new_data['phone_TGT'] = old_data['Target phone']
-    new_data['phone_OTH'] = old_data['Other phone']
-    new_data['phone_X'] = old_data['phone2_X']
-    new_data['context'] = [old_data['phone1_TGT'][i] + '_' + old_data['phone3_TGT'][i] for i in
+    new_data['phone_TGT'] = old_data['Target phone'].apply(lambda x: IPA_TRANSCRIPTION[x])
+    new_data['phone_OTH'] = old_data['Other phone'].apply(lambda x: IPA_TRANSCRIPTION[x])
+    new_data['phone_X'] = old_data['phone2_X'].apply(lambda x: IPA_TRANSCRIPTION[x])
+    new_data['context'] = [IPA_TRANSCRIPTION[old_data['phone1_TGT'][i]] + '_' + IPA_TRANSCRIPTION[old_data['phone3_TGT'][i]] for i in
                            range(len(old_data['phone3_TGT']))]
-    new_data['prev_phone'] = old_data['phone1_TGT']
-    new_data['next_phone'] = old_data['phone3_TGT']
+    new_data['prev_phone'] = old_data['phone1_TGT'].apply(lambda x: IPA_TRANSCRIPTION[x])
+    new_data['next_phone'] = old_data['phone3_TGT'].apply(lambda x: IPA_TRANSCRIPTION[x])
+
+    new_data['nb_stimuli'] = old_data['order'].apply(lambda x: x - 8)
     new_data['dataset'] = old_data['phone3_X'].apply(lambda x: 'pilot-july-2018')
 
     # Additional information
@@ -150,19 +164,25 @@ def restructure_stimuli_dataset_3_july(name, destination_path=None):
     new_data['#file_extract'] = [*old_data['TGT_filename'], *old_data['OTH_filename'], *old_data['X_filename']]
     new_data['onset'] = [*old_data['onset_TGT'], *old_data['onset_OTH'], *old_data['onset_X']]
     new_data['offset'] = [*old_data['offset_TGT'], *old_data['offset_OTH'], *old_data['offset_X']]
-    new_data['#phone'] = [*old_data['Target phone'], *old_data['Other phone'], *old_data['phone2_X']]
+    new_data['#phone'] = [*old_data['Target phone'].apply(lambda x: IPA_TRANSCRIPTION[x]),
+                          *old_data['Other phone'].apply(lambda x: IPA_TRANSCRIPTION[x]),
+                          *old_data['phone2_X'].apply(lambda x: IPA_TRANSCRIPTION[x])]
     new_data['context'] = [
-        *[old_data['phone1_TGT'][i] + '_' + old_data['phone3_TGT'][i] for i in range(len(old_data['phone3_TGT']))],
-        *[old_data['phone1_TGT'][i] + '_' + old_data['phone3_TGT'][i] for i in range(len(old_data['phone3_TGT']))],
-        *[old_data['phone1_TGT'][i] + '_' + old_data['phone3_TGT'][i] for i in range(len(old_data['phone3_TGT']))]]
+        *[IPA_TRANSCRIPTION[old_data['phone1_TGT'][i]] + '_' + IPA_TRANSCRIPTION[old_data['phone3_TGT'][i]] for i in range(len(old_data['phone3_TGT']))],
+        *[IPA_TRANSCRIPTION[old_data['phone1_TGT'][i]] + '_' + IPA_TRANSCRIPTION[old_data['phone3_TGT'][i]] for i in range(len(old_data['phone3_TGT']))],
+        *[IPA_TRANSCRIPTION[old_data['phone1_TGT'][i]] + '_' + IPA_TRANSCRIPTION[old_data['phone3_TGT'][i]] for i in range(len(old_data['phone3_TGT']))]]
 
     new_data['language'] = [*old_data['dialect_TGT'].apply(lambda x: 'EN_' + x),
                             *old_data['dialect_OTH'].apply(lambda x: 'EN_' + x),
                             *old_data['dialect_X'].apply(lambda x: 'EN_' + x)]
     new_data['speaker'] = [*old_data['talker_TGT'], *old_data['talker_OTH'], *old_data['talker_X']]
 
-    new_data['prev_phone'] = [*old_data['phone1_TGT'], *old_data['phone1_OTH'], *old_data['phone1_X']]
-    new_data['next_phone'] = [*old_data['phone3_TGT'], *old_data['phone3_OTH'], *old_data['phone3_X']]
+    new_data['prev_phone'] = [*old_data['phone1_TGT'].apply(lambda x: IPA_TRANSCRIPTION[x]),
+                              *old_data['phone1_OTH'].apply(lambda x: IPA_TRANSCRIPTION[x]),
+                              *old_data['phone1_X'].apply(lambda x: IPA_TRANSCRIPTION[x])]
+    new_data['next_phone'] = [*old_data['phone3_TGT'].apply(lambda x: IPA_TRANSCRIPTION[x]),
+                              *old_data['phone3_OTH'].apply(lambda x: IPA_TRANSCRIPTION[x]),
+                              *old_data['phone3_X'].apply(lambda x: IPA_TRANSCRIPTION[x])]
     new_data['dataset'] = ['pilot-july-2018' for _ in range(1, 1 + 3 * len(old_data['phoneitem_id_TGT']))]
 
     # Save the new csv

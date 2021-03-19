@@ -81,11 +81,12 @@ def restructure_triplets_dataset_2_bis(name, destination_path=None):
 
     new_data['phone_TGT'] = old_data['TGT']
     new_data['phone_OTH'] = old_data['OTH']
-    new_data['phone_X'] = ['NA' for _ in range(len(old_data['next_phone']))]
+    new_data['phone_X'] = old_data['TGT']
     new_data['context'] = [old_data['prev_phone'][i] + '_' + old_data['next_phone'][i] for i in
                            range(len(old_data['next_phone']))]
     new_data['prev_phone'] = old_data['prev_phone']
     new_data['next_phone'] = old_data['next_phone']
+    new_data['nb_stimuli'] = old_data['nb_stimuli']
     new_data['dataset'] = ['zerospeech' for _ in range(len(old_data['next_phone']))]
 
     new_data = pd.DataFrame(new_data)
@@ -201,8 +202,6 @@ if __name__ == '__main__':
     PATH_TO_DATA = '/home/coml/Documents/Victoria/'
     parser = BUILD_ARGPARSE()
     args = parser.parse_args(sys.argv[1:])
-    # restructure_triplets_dataset_2('../interspeech-2020-perceptimatic/DATA/human_and_models.csv',
-    #                                '../../data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
 
     restructure_triplets_dataset_2_bis(PATH_TO_DATA + 'datasets_manipulation/interspeech-2020-perceptimatic/DATA/all_info_french_english_last.csv',
                                    PATH_TO_DATA + 'data/zerospeech/annotation_data/zerospeech_human_experimental_data.csv')
