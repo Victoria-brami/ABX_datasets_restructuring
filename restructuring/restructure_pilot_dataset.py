@@ -95,9 +95,9 @@ def restructure_triplets_dataset_3_july(name, destination_path=None):
     new_data['subject_language'] = old_data['subject_language'].apply(lambda x: x.split('_')[0][:2].upper())
     new_data['triplet_id'] = old_data['tripletid'].apply(lambda x: 'triplet_' + x[1:])
 
-    new_data['TGT_item'] = old_data['file_TGT']
-    new_data['OTH_item'] = old_data['file_OTH']
-    new_data['X_item'] = old_data['file_X']
+    new_data['TGT_item'] = old_data['TGT_filename']
+    new_data['OTH_item'] = old_data['OTH_filename']
+    new_data['X_item'] = old_data['X_filename']
 
     new_data['TGT_first'] = old_data['presentation_order'].apply(lambda x: x.startswith('A'))
     new_data['user_ans'] = [int(old_data['first_sound'][i] == correct_answer[i]) for i in
@@ -203,7 +203,7 @@ if __name__ == '__main__':
 
     ### Merge files
     NAME_HUMAN = '../../datasets_manipulation/first-geomphon-perception-ABX/experiments/pilot_july_2018/data/Aggregated_Results_cleaned.csv'
-    NAME_META = '../../datasets_manipulation/first-geomphon-perception-ABX/experiments/pilot_july_2018/stimuli/item_meta_information.csv'
+    NAME_META = '../../datasets_manipulation/first-geomphon-perception-ABX/experiments/pilot_july_2018/stimuli/item_meta_information_tuned.csv'
     DESTINATION = '../../datasets_manipulation/first-geomphon-perception-ABX/experiments/pilot_july_2018/data/merged_results_cleaned.csv'
     merge_pilot_dataset_july_information(NAME_HUMAN, NAME_META, DESTINATION)
 

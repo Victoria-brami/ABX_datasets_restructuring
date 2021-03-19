@@ -40,6 +40,7 @@ def restructure_triplets_dataset_3_august(name, destination_path=None):
     new_data['context'] = old_data['context_TGT']
     new_data['prev_phone'] = ['NA' for _ in range(len(old_data['file_TGT']))]
     new_data['next_phone'] = ['NA' for _ in range(len(old_data['file_TGT']))]
+    new_data['nb_stimuli'] = old_data['order'].apply(lambda x: int(x[:-1]) - 14)
     new_data['dataset'] = ['pilot-aug-2018' for _ in range(len(old_data['file_TGT']))]
 
     # Save the new csv
@@ -83,6 +84,7 @@ def restructure_stimuli_dataset_3_august(name, destination_path=None):
 
     new_data['prev_phone'] = ['NA' for _ in range(len(old_data['CORR_ANS']) * 3)]
     new_data['next_phone'] = ['NA' for _ in range(len(old_data['CORR_ANS']) * 3)]
+
     new_data['dataset'] = ['pilot-aug-2018' for _ in range(len(old_data['CORR_ANS']) * 3)]
 
     # Save the new csv
