@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="596dd17c-3546-47fb-80c2-ffa8dd7ed861" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/restructuring/triplets/restructure_pilot_triplets.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run_tests.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restructuring/restructure_pilot_august_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/restructuring/restructure_pilot_august_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restructuring/restructure_pilot_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/restructuring/restructure_pilot_dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/format_tests/display_data_contents.py" beforeDir="false" afterPath="$PROJECT_DIR$/format_tests/display_data_contents.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/format_tests/human_exp_format/test_human_exp_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/format_tests/human_exp_format/test_human_exp_format.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,17 +31,18 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../site/perceptimatic_dataset" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/format_tests/stimuli_format" />
       <recent name="$PROJECT_DIR$/format_tests" />
       <recent name="$PROJECT_DIR$/restructuring" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.restructure_pilot_august_dataset">
+  <component name="RunManager" selected="Python.display_data_contents">
     <configuration name="display_data_contents" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ABX_datasets_restructuring" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -149,15 +150,15 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.display_data_contents" />
         <item itemvalue="Python.restructure_pilot_august_dataset" />
         <item itemvalue="Python.restructure_pilot_triplets" />
         <item itemvalue="Python.restructure_pilot_dataset" />
-        <item itemvalue="Python.display_data_contents" />
         <item itemvalue="Python.restructure_first_abx_dataset" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>

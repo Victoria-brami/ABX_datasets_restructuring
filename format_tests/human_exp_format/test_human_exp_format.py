@@ -199,4 +199,4 @@ def customize_test(list_of_tests):
 if __name__ == '__main__':
     # unittest.main()
     runner = unittest.TextTestRunner()
-    runner.run(customize_test(['test_csv_name_prefix', 'test_language_TGT_format' 'test_dataset_key_format']))
+    runner.run(customize_test(['test_csv_name_prefix', 'test_language_TGT_format', 'test_dataset_key_format']))

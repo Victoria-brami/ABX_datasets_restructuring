@@ -44,7 +44,7 @@ def display_format():
     print('Index: ', INDEX)
     print()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--key_list', type=list, default=['phone_TGT', 'context'])
+    parser.add_argument('--key_list', type=list, default=['nb_stimuli'])
     args = parser.parse_args()
 
     for key in args.key_list:
